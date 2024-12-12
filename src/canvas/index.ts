@@ -305,8 +305,21 @@ class FabricEditor extends Event {
 
     // end 可能需要的destory
     private destory: Function[] = []
-    public destoryAll() {
+    public async destoryAll() {
+        // 检查画布内容
+        // if (this.canvas.getObjects().length) {
+        //     await ElMessageBox.confirm('画布内容不为空，确定要退出吗？', '提示', {
+        //         confirmButtonText: '确定',
+        //         cancelButtonText: '保存到本地',
+        //         type: 'warning'
+        //     }).then(() => {
+
+        //     }).catch(() => {
+                
+        //     })
+        // }
         this.canvas.off()
+        this.canvas.destroy()
         this.destory.forEach(fun => fun())
     }
 

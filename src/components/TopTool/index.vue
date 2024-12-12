@@ -13,17 +13,12 @@ const state = reactive({
             <span>选择</span>
         </div>
         <el-divider direction="vertical" />
-        <div class="flex items-center flex-col justify-between w-[50px] cursor-pointer">
-            <el-icon class="m-auto" :size="20">
-                <el-icon-Picture />
-            </el-icon>
-            <span>调整大小</span>
-        </div>
+            <workspace-setting />
         <el-divider direction="vertical" />
         <div class="flex items-center flex-col justify-between cursor-pointer">
             <div class="m-auto w-full grid grid-cols-3 gap-[4px] px-[4px]">
                 <el-icon v-for="i in 5" :size="18">
-                    <el-icon-Picture />
+                    <el-icon-Picture :data-index="i" />
                 </el-icon>
             </div>
             <span>工具</span>
@@ -39,7 +34,7 @@ const state = reactive({
         <div class="flex items-center flex-col justify-between cursor-pointer">
             <div class="m-auto w-full grid grid-cols-6 gap-[4px] py-[3px] border px-[4px] rounded">
                 <el-icon v-for="i in 12" :size="18">
-                    <el-icon-Picture />
+                    <el-icon-Picture :data-index="i" />
                 </el-icon>
             </div>
             <span>形状</span>

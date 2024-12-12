@@ -5,7 +5,7 @@ import FabricEditor from '@/canvas'
 
 var editor = new FabricEditor({
     width: window.innerWidth,
-    height: window.innerHeight - 150,
+    height: window.innerHeight - 120,
 })
 provide('editor', editor)
 
@@ -23,15 +23,15 @@ onMounted(() => {
 onUnmounted(() => {
     editor.destoryAll()
 })
-const down = () => {
-    editor.canvas.add(new fabric.Rect({
-        width: 100,
-        height: 100,
-        fill: '#00f',
-        // selectable: false,
-    }))
-    ElMessage.success('添加成功')
-}
+// const down = () => {
+//     editor.canvas.add(new fabric.Rect({
+//         width: 100,
+//         height: 100,
+//         fill: '#00f',
+//         // selectable: false,
+//     }))
+//     ElMessage.success('添加成功')
+// }
 </script>
 
 <template>

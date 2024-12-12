@@ -47,7 +47,7 @@
                 </el-dropdown-menu>
             </template>
         </el-dropdown>
-        <el-link :underline="false" >帮助</el-link>
+        <el-link :underline="false" href="mailto:2212617280@qq.com?subject=Help%20Request&body=Please%20send%20me%20a%20right-click%20menu%20item%20or%20something.">帮助</el-link>
         <el-icon class="ml-auto mr-2">
             <el-icon-setting />
         </el-icon>
@@ -56,7 +56,7 @@
 
 <script lang="ts" setup>
 import { useFullscreen } from '@vueuse/core'
-const { isFullscreen, enter, exit, toggle } = useFullscreen()
+const { isFullscreen, toggle } = useFullscreen()
 
 import FabricEditor from '@/canvas'
 import { downloadPNG, downloadJSON, selectJSON } from '@/utils/file'
