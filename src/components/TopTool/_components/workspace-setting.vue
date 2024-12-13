@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import FabricEditor from '@/canvas'
+import { debounce } from 'lodash'
 
 const editor = inject('editor') as FabricEditor
 const state = reactive({
@@ -7,13 +8,15 @@ const state = reactive({
     height: editor.workspace.height,
     color: editor.workspace.fill as string,
 })
-watchEffect(() => {
+watch(state, debounce(() => {
     editor.workspace.set({
         width: state.width,
         height: state.height,
         fill: state.color,
     })
     editor.canvas.requestRenderAll()
+}, 200),{
+    deep: true
 })
 
 </script>

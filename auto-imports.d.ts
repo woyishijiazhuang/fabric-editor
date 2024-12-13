@@ -11,6 +11,7 @@ declare global {
   const ElInput: typeof import('element-plus/es')['ElInput']
   const ElMessage: typeof import('element-plus/es')['ElMessage']
   const ElMessageBox: typeof import('element-plus/es')['ElMessageBox']
+  const ElNotification: typeof import('element-plus/es')['ElNotification']
   const ElSwitch: typeof import('element-plus/es')['ElSwitch']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const computed: typeof import('vue')['computed']

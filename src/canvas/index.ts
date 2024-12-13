@@ -5,6 +5,8 @@ import control from './utils/control'
 import AlignLine from './utils/AlignLine'
 import Ruler from './utils/Ruler'
 import { debounce } from 'lodash'
+import Clipboard from './utils/Clipboard'
+
 
 type TOptions<T> = Partial<T> & Record<string, any>
 
@@ -213,20 +215,26 @@ class FabricEditor extends Event {
             ...opt
         }
     }
-
     // 6. ctrl + v + c
     private bindCtrlCV() {
-        let copyCahceObj: fabric.Object | fabric.Group | fabric.ActiveSelection | undefined
         // 侦听ctrl+c
         const fun = async (e: KeyboardEvent) => {
             // 复制
             if (e.ctrlKey && e.key === 'c') {
-                copyCahceObj = await this.canvas.getActiveObject()?.clone()
+                const obj = await this.canvas.getActiveObject()?.clone()
+                if (obj) {
+                    obj.includeDefaultValues = false
+                    Clipboard.set(JSON.stringify(await obj.toJSON()))      
+                }
             } else if (e.ctrlKey && e.key === 'v') {
-                const obj = await copyCahceObj?.clone()
+                const str = await Clipboard.get()
+                // TODO: 判断str类别, svg base64, 图片, json
+                const obj = (await fabric.util.enlivenObjects([JSON.parse(str)]))[0]
                 if (obj) {
                     this.canvas.discardActiveObject()
+                    // @ts-ignore
                     obj.set({ evented: true })
+                    // @ts-ignore
                     obj.setPositionByOrigin(this.mousePosition, 'center', 'center')
                     if (obj instanceof fabric.ActiveSelection) {
                         obj.canvas = this.canvas
@@ -235,12 +243,12 @@ class FabricEditor extends Event {
                         })
                         obj.setCoords()
                     } else {
+                        // @ts-ignore
                         this.canvas.add(obj)
                     }
+                    // @ts-ignore
                     this.canvas.setActiveObject(obj)
                     this.canvas.requestRenderAll()
-                } else {
-                    // #TODO: 从剪贴板黏贴文字等
                 }
             }
         }
