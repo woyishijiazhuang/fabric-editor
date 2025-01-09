@@ -13,7 +13,7 @@ type TOptions<T> = Partial<T> & Record<string, any>
 class FabricEditor extends Event {
     public fragment: DocumentFragment
     public canvas: fabric.Canvas
-    public get workspace () {
+    public get workspace() {
         // @ts-ignore 导入json时, workspace会发生变化
         return this.canvas.getObjects().find(obj => obj.id === 'workspace') as fabric.Rect
     }
@@ -132,8 +132,8 @@ class FabricEditor extends Event {
         const p1 = this.canvas.getCenterPoint()
         // 计算标尺的SIZE
         if (this.ruler?.size && this.ruler.status) {
-            p1.x += this.ruler.size / 2 
-            p1.y += this.ruler.size / 2 
+            p1.x += this.ruler.size / 2
+            p1.y += this.ruler.size / 2
         }
         const p2 = centerObj.getCenterPoint()
         const viewportTransform = this.canvas.viewportTransform
@@ -219,42 +219,59 @@ class FabricEditor extends Event {
         // 侦听ctrl+v+c
         const pasteFun = async (event: ClipboardEvent) => {
             // 检查当前焦点元素是否是输入框或可编辑元素
-            const activeElement = document.activeElement;
+            const activeElement = document.activeElement
             const isInputFocused =
                 activeElement?.tagName === 'INPUT' ||
                 activeElement?.tagName === 'TEXTAREA' ||
-                activeElement?.getAttribute('contenteditable') === 'true';
-        
+                activeElement?.getAttribute('contenteditable') === 'true'
+
             // 如果焦点在输入框或可编辑元素内，则不处理
             if (isInputFocused) {
-                return;
+                return
             }
             // 阻止默认粘贴行为
-            event.preventDefault();
-        
+            event.preventDefault()
+
             // 获取剪贴板内容
-            const clipboardData = event.clipboardData;
-        
+            const clipboardData = event.clipboardData
+
             if (clipboardData) {
                 // 处理剪贴板中的多个项目
                 for (let i = 0; i < clipboardData.items.length; i++) {
-                    const item = clipboardData.items[i];
+                    const item = clipboardData.items[i]
                     // 处理文本内容
                     if (item.type === 'text/plain') {
                         item.getAsString((str) => {
-                            console.log('粘贴的文本内容：', str);
                             var textbox = new fabric.IText(str, {
                                 left: this.mousePosition.x,
                                 top: this.mousePosition.y,
-                            });
-                            this.canvas.add(textbox);
+                                fontSize: 16,
+                            })
+                            textbox.set({
+                                left: this.mousePosition.x - textbox.width / 2,
+                                top: this.mousePosition.y - textbox.height / 2,
+                            })
+                            this.canvas.add(textbox)
                         })
                     }
                     // 处理图片内容
                     else if (item.type.startsWith('image/')) {
-                        const file = item.getAsFile();
+                        const file = item.getAsFile()
                         if (file) {
-                            console.log(file)
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                const img = new Image();
+                                img.onload = () => {
+                                    const fabricImage = new fabric.Image(img, {
+                                        left: this.mousePosition.x,
+                                        top: this.mousePosition.y,
+                                    });
+                                    this.canvas.add(fabricImage);
+                                    this.canvas.requestRenderAll();
+                                };
+                                img.src = e.target?.result as string;
+                            };
+                            reader.readAsDataURL(file);
                         }
                     }
                     // 处理特殊JSON
@@ -282,19 +299,19 @@ class FabricEditor extends Event {
                 }
             }
         }
-        
-        const copyFun =  async (event: ClipboardEvent) => {
+
+        const copyFun = async (event: ClipboardEvent) => {
             // 获取选中的文本 
-            const selectedText = window.getSelection()?.toString();
+            const selectedText = window.getSelection()?.toString()
             // 如果没有选中文本，则复制自定义内容 
-            if (!selectedText) { 
-                event.preventDefault();
+            if (!selectedText) {
+                event.preventDefault()
                 // 阻止默认的复制行为
                 const obj = await this.canvas.getActiveObject()?.clone()
                 if (obj) {
                     obj.includeDefaultValues = false
                     // 自定义类型
-                    event.clipboardData?.setData('text/json', JSON.stringify(await obj.toJSON()))  
+                    event.clipboardData?.setData('text/json', JSON.stringify(await obj.toJSON()))
                 }
             }
         }
@@ -327,7 +344,7 @@ class FabricEditor extends Event {
     // 方向控制
     private directionControl() {
         const fun = (e: KeyboardEvent) => {
-            
+
             const obj = this.canvas.getActiveObject()
             if (!obj) return
             switch (e.key) {
@@ -354,7 +371,7 @@ class FabricEditor extends Event {
         this.destory.push(() => window.removeEventListener('keyup', fun))
     }
 
-    
+
 
 
 
@@ -373,7 +390,7 @@ class FabricEditor extends Event {
         //     }).then(() => {
 
         //     }).catch(() => {
-                
+
         //     })
         // }
         this.canvas.off()
