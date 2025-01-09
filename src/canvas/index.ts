@@ -243,6 +243,11 @@ class FabricEditor extends Event {
                     if (item.type === 'text/plain') {
                         item.getAsString((str) => {
                             console.log('粘贴的文本内容：', str);
+                            var textbox = new fabric.IText(str, {
+                                left: this.mousePosition.x,
+                                top: this.mousePosition.y,
+                            });
+                            this.canvas.add(textbox);
                         })
                     }
                     // 处理图片内容
