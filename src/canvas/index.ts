@@ -5,7 +5,6 @@ import control from './utils/control'
 import AlignLine from './utils/AlignLine'
 import Ruler from './utils/Ruler'
 import { debounce } from 'lodash'
-import Clipboard from './utils/Clipboard'
 
 
 type TOptions<T> = Partial<T> & Record<string, any>
@@ -217,44 +216,90 @@ class FabricEditor extends Event {
     }
     // 6. ctrl + v + c
     private bindCtrlCV() {
-        // 侦听ctrl+c
-        const fun = async (e: KeyboardEvent) => {
-            // 复制
-            if (e.ctrlKey && e.key === 'c') {
+        // 侦听ctrl+v+c
+        const pasteFun = async (event: ClipboardEvent) => {
+            // 检查当前焦点元素是否是输入框或可编辑元素
+            const activeElement = document.activeElement;
+            const isInputFocused =
+                activeElement?.tagName === 'INPUT' ||
+                activeElement?.tagName === 'TEXTAREA' ||
+                activeElement?.getAttribute('contenteditable') === 'true';
+        
+            // 如果焦点在输入框或可编辑元素内，则不处理
+            if (isInputFocused) {
+                return;
+            }
+            // 阻止默认粘贴行为
+            event.preventDefault();
+        
+            // 获取剪贴板内容
+            const clipboardData = event.clipboardData;
+        
+            if (clipboardData) {
+                // 处理剪贴板中的多个项目
+                for (let i = 0; i < clipboardData.items.length; i++) {
+                    const item = clipboardData.items[i];
+                    // 处理文本内容
+                    if (item.type === 'text/plain') {
+                        item.getAsString((str) => {
+                            console.log('粘贴的文本内容：', str);
+                        })
+                    }
+                    // 处理图片内容
+                    else if (item.type.startsWith('image/')) {
+                        const file = item.getAsFile();
+                        if (file) {
+                            console.log(file)
+                        }
+                    }
+                    // 处理特殊JSON
+                    else if (item.type === 'text/json') {
+                        item.getAsString(async (str) => {
+                            const obj = (await fabric.util.enlivenObjects([JSON.parse(str)]))[0]
+                            if (obj && obj instanceof fabric.FabricObject) {
+                                this.canvas.discardActiveObject()
+                                obj.set({ evented: true })
+                                obj.setPositionByOrigin(this.mousePosition, 'center', 'center')
+                                if (obj instanceof fabric.ActiveSelection) {
+                                    obj.canvas = this.canvas
+                                    obj.forEachObject((obj) => {
+                                        this.canvas.add(obj)
+                                    })
+                                    obj.setCoords()
+                                } else {
+                                    this.canvas.add(obj)
+                                }
+                                this.canvas.setActiveObject(obj)
+                                this.canvas.requestRenderAll()
+                            }
+                        })
+                    }
+                }
+            }
+        }
+        
+        const copyFun =  async (event: ClipboardEvent) => {
+            // 获取选中的文本 
+            const selectedText = window.getSelection()?.toString();
+            // 如果没有选中文本，则复制自定义内容 
+            if (!selectedText) { 
+                event.preventDefault();
+                // 阻止默认的复制行为
                 const obj = await this.canvas.getActiveObject()?.clone()
                 if (obj) {
                     obj.includeDefaultValues = false
-                    Clipboard.set(JSON.stringify(await obj.toJSON()))      
-                }
-            } else if (e.ctrlKey && e.key === 'v') {
-                const str = await Clipboard.get()
-                // TODO: 判断str类别, svg base64, 图片, json
-                const obj = (await fabric.util.enlivenObjects([JSON.parse(str)]))[0]
-                if (obj) {
-                    this.canvas.discardActiveObject()
-                    // @ts-ignore
-                    obj.set({ evented: true })
-                    // @ts-ignore
-                    obj.setPositionByOrigin(this.mousePosition, 'center', 'center')
-                    if (obj instanceof fabric.ActiveSelection) {
-                        obj.canvas = this.canvas
-                        obj.forEachObject((obj) => {
-                            this.canvas.add(obj)
-                        })
-                        obj.setCoords()
-                    } else {
-                        // @ts-ignore
-                        this.canvas.add(obj)
-                    }
-                    // @ts-ignore
-                    this.canvas.setActiveObject(obj)
-                    this.canvas.requestRenderAll()
+                    // 自定义类型
+                    event.clipboardData?.setData('text/json', JSON.stringify(await obj.toJSON()))  
                 }
             }
         }
 
-        window.addEventListener('keydown', fun)
-        this.destory.push(() => window.removeEventListener('keydown', fun))
+        window.addEventListener('paste', pasteFun)
+        window.addEventListener('copy', copyFun)
+        this.destory.push(() => {
+            window.removeEventListener('paste', pasteFun)
+            window.removeEventListener('copy', copyFun)
+        })
     }
     // 7. 侦听元素变化适应大小
     public observeElement(el: HTMLElement) {

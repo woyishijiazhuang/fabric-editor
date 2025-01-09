@@ -41,6 +41,8 @@ const state = reactive({
         </div>
         <el-divider direction="vertical" />
         <color-picker v-model="state.color" />
+        <el-divider direction="vertical" />
+        <!-- <el-input v-model="state.mode"></el-input> -->
     </div>
 </template>
 
