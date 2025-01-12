@@ -17,7 +17,6 @@ class FabricEditor extends Event {
         // @ts-ignore 导入json时, workspace会发生变化
         return this.canvas.getObjects().find(obj => obj.id === 'workspace') as fabric.Rect
     }
-
     public alignLine: AlignLine // 辅助线
     public ruler: Ruler // 刻度尺
     constructor(options: TOptions<CanvasOptions> = {}) {
@@ -65,7 +64,6 @@ class FabricEditor extends Event {
         this.bindCtrlCV()
         this.directionControl()
     }
-
 
     // 实时侦听鼠标位置
     public mousePosition = new fabric.Point(0, 0)
@@ -262,9 +260,9 @@ class FabricEditor extends Event {
                             reader.onload = (e) => {
                                 const img = new Image();
                                 img.onload = () => {
-                                    const fabricImage = new fabric.Image(img, {
-                                        left: this.mousePosition.x,
-                                        top: this.mousePosition.y,
+                                    const fabricImage = new fabric.FabricImage(img, {
+                                        left: this.mousePosition.x - img.width / 2,
+                                        top: this.mousePosition.y - img.height / 2,
                                     });
                                     this.canvas.add(fabricImage);
                                     this.canvas.requestRenderAll();
@@ -341,7 +339,7 @@ class FabricEditor extends Event {
         resizeObserver.observe(el)
     }
 
-    // 方向控制
+    // 8. 键盘方向控制
     private directionControl() {
         const fun = (e: KeyboardEvent) => {
 

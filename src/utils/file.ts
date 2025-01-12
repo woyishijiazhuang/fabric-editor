@@ -43,7 +43,7 @@ function down(href: string, name: string) {
     a.remove()
 }
 
-// 根据日期获取文件名
+// 根据日期生成文件名
 function getFileName() {
     const date = new Date()
     return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}-${date.getHours().toString().padStart(2, '0')}-${date.getMinutes().toString().padStart(2, '0')}-${date.getSeconds().toString().padStart(2, '0')}`
