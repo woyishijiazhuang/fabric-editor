@@ -1,3 +1,16 @@
+<template>
+    <el-config-provider size="small" :message="{ duration: 2000 }">
+        <div class="canvas_app">
+            <div class="control_panel">
+                <TopMenu />
+                <TopTool />
+            </div>
+            <div ref="containerRef" class="fabric_container tbackground">
+                <ContextMenu />
+            </div>
+        </div>
+    </el-config-provider>
+</template>
 <script setup lang="ts">
 import * as fabric from 'fabric'
 import FabricEditor from '@/canvas'
@@ -33,21 +46,6 @@ onUnmounted(() => {
 //     ElMessage.success('添加成功')
 // }
 </script>
-
-<template>
-    <el-config-provider size="small" :message="{ duration: 2000 }">
-        <div class="canvas_app">
-            <div class="control_panel flex flex-col">
-                <TopMenu />
-                <TopTool />
-            </div>
-            <div ref="containerRef" class="fabric_container tbackground">
-                <ContextMenu />
-            </div>
-        </div>
-    </el-config-provider>
-</template>
-
 <style scoped>
 .canvas_app {
     width: 100vw;
@@ -57,6 +55,8 @@ onUnmounted(() => {
 }
 
 .control_panel {
+    display: flex;
+    flex-direction: column;
     min-height: 120px;
     max-height: 120px;
     /* background: #ffc6c6; */

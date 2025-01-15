@@ -1,3 +1,22 @@
+<template>
+    <div class="flex flex-col items-center">
+        <div class="flex-1 w-full flex gap-[4px]">
+            <div class="flex flex-col justify-center gap-[10px]">
+                <div @click="selectColor('#000', -1)" :style="selectIndex == -1 ? 'transform: scale(1.4)' : ''" class="w-[16px] h-[16px] bg-[#000] rounded-[50%] shadow-[0_0_2px_#222] cursor-pointer"></div>
+                <div @click="selectColor('#FFF', -2)" :style="selectIndex == -2 ? 'transform: scale(1.4)' : ''" class="w-[16px] h-[16px] bg-[#FFF] rounded-[50%] shadow-[0_0_2px_#222] cursor-pointer"></div>
+            </div>
+            <div class="grid grid-cols-[repeat(9,1fr)] gap-x-[6px] mx-[10px] items-center">
+                <div v-for="color,i in colorList" :key="i" @click="selectColor(color, i)" :style="`background-color: ${color};` + (selectIndex == i ? 'transform: scale(1.3)' : '')"
+                    class="w-[12px] h-[12px] rounded-[50%] shadow-[0_0_2px_#222] cursor-pointer">
+                </div>
+            </div>
+            <div class="flex items-center">
+                <el-color-picker v-model="value" class="w-[40px] h-[40px]" :disabled="selectIndex < 0" show-alpha @change="changeColor"></el-color-picker>
+            </div>
+        </div>
+        <span>颜色</span>
+    </div>
+</template>
 <script setup lang='ts'>
 import { useLocalStorage } from '@vueuse/core';
 
@@ -45,25 +64,3 @@ const changeColor = (color: string | null) => {
     colorList.value[selectIndex.value] = color
 }
 </script>
-
-<template>
-    <div class="flex flex-col items-center">
-        <div class="flex-1 w-full flex gap-[4px]">
-            <div class="flex flex-col justify-center gap-[10px]">
-                <div @click="selectColor('#000', -1)" :style="selectIndex == -1 ? 'transform: scale(1.4)' : ''" class="w-[16px] h-[16px] bg-[#000] rounded-[50%] shadow-[0_0_2px_#222] cursor-pointer"></div>
-                <div @click="selectColor('#FFF', -2)" :style="selectIndex == -2 ? 'transform: scale(1.4)' : ''" class="w-[16px] h-[16px] bg-[#FFF] rounded-[50%] shadow-[0_0_2px_#222] cursor-pointer"></div>
-            </div>
-            <div class="grid grid-cols-[repeat(9,1fr)] gap-x-[6px] mx-[10px] items-center">
-                <div v-for="color,i in colorList" :key="i" @click="selectColor(color, i)" :style="`background-color: ${color};` + (selectIndex == i ? 'transform: scale(1.3)' : '')"
-                    class="w-[12px] h-[12px] rounded-[50%] shadow-[0_0_2px_#222] cursor-pointer">
-                </div>
-            </div>
-            <div class="flex items-center">
-                <el-color-picker v-model="value" class="w-[40px] h-[40px]" :disabled="selectIndex < 0" show-alpha @change="changeColor"></el-color-picker>
-            </div>
-        </div>
-        <span>颜色</span>
-    </div>
-</template>
-
-<style scoped></style>

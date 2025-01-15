@@ -1,3 +1,11 @@
+<template>
+    <ul class="context-menu" :style="style">
+        <li v-for="item in menuList" :key="item.name" :style="{ display: item.show ? 'block' : 'none' }"
+            @click="item.click">
+            <span>{{ item.name }}</span>
+        </li>
+    </ul>
+</template>
 <script setup lang='ts'>
 import * as fabric from 'fabric'
 import { useEventListener } from '@vueuse/core'
@@ -48,7 +56,7 @@ const handle = {
             editor.canvas.setActiveObject(sel)
             editor.canvas.requestRenderAll()
         }
-    },
+    }
 }
 const menuList = ref<any[]>([
     { name: '锁定', icon: 'lock', show: false, click: handle.lock },
@@ -86,15 +94,6 @@ const open = (e: MouseEvent) => {
 useEventListener(editor.canvas.wrapperEl, 'contextmenu', open)
 useEventListener(window.document, 'click', () => style.display = 'none')
 </script>
-
-<template>
-    <ul class="context-menu" :style="style">
-        <li v-for="item in menuList" :key="item.name" :style="{ display: item.show ? 'block' : 'none' }"
-            @click="item.click">
-            <span>{{ item.name }}</span>
-        </li>
-    </ul>
-</template>
 
 <style scoped>
 .context-menu {

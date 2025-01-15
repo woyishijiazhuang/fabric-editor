@@ -1,5 +1,5 @@
 <template>
-    <header class="top-menu flex items-center gap-4 p-2">
+    <header class="top-menu bg-[#f3f3f3] flex items-center gap-4 p-2">
         <img class="w-[20px] h-[20px]" src="/icon.svg" />
         <el-dropdown>
             <el-link :underline="false" >文件</el-link>
@@ -111,10 +111,6 @@ const changeObject = (type: 'up' | 'down' | 'top' | 'bottom') => {
 
 </script>
 <style scoped>
-.top-menu {
-    background: #f3f3f3;
-}
-
 .el-link {
     cursor: pointer;
     --el-link-text-color: #222;
