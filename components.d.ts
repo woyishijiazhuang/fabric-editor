@@ -7,7 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    ColorPicker: typeof import('./src/components/TopTool/_components/color-picker.vue')['default']
+    ColorPicker: typeof import('./src/components/TopTool/_components/ColorPicker.vue')['default']
     ContextMenu: typeof import('./src/components/ContextMenu.vue')['default']
     ElColorPicker: typeof import('element-plus/es')['ElColorPicker']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
@@ -28,6 +28,6 @@ declare module 'vue' {
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     TopMenu: typeof import('./src/components/TopMenu.vue')['default']
     TopTool: typeof import('./src/components/TopTool/index.vue')['default']
-    WorkspaceSetting: typeof import('./src/components/TopTool/_components/workspace-setting.vue')['default']
+    WorkspaceSetting: typeof import('./src/components/TopTool/_components/WorkspaceSetting.vue')['default']
   }
 }

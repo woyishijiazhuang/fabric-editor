@@ -1,9 +1,9 @@
 import * as fabric from 'fabric'
-import Event from './event'
+import Event from './class/Event'
 import { CanvasOptions } from 'fabric'
 import control from './utils/control'
-import AlignLine from './utils/AlignLine'
-import Ruler from './utils/Ruler'
+import AlignLine from './class/AlignLine'
+import Ruler from './class/Ruler'
 import { debounce } from 'lodash'
 
 

@@ -13,7 +13,7 @@ const state = reactive({
             <span>选择</span>
         </div>
         <el-divider direction="vertical" />
-            <workspace-setting />
+        <WorkspaceSetting />
         <el-divider direction="vertical" />
         <div class="flex items-center flex-col justify-between cursor-pointer">
             <div class="m-auto w-full grid grid-cols-3 gap-[4px] px-[4px]">
@@ -25,7 +25,7 @@ const state = reactive({
         </div>
         <el-divider direction="vertical" />
         <div class="flex items-center flex-col justify-between w-[50px] cursor-pointer">
-            <el-icon class="m-auto" :size="24" >
+            <el-icon class="m-auto" :size="24">
                 <el-icon-EditPen />
             </el-icon>
             <span>画笔</span>
@@ -40,7 +40,7 @@ const state = reactive({
             <span>形状</span>
         </div>
         <el-divider direction="vertical" />
-        <color-picker v-model="state.color" />
+        <ColorPicker v-model="state.color" />
         <el-divider direction="vertical" />
         <!-- <el-input v-model="state.mode"></el-input> -->
     </div>
@@ -52,6 +52,7 @@ const state = reactive({
     border-bottom: 1px solid #f7f7f7;
     /* box-shadow: inset 0 -1px 0 #f3f3f3; */
 }
+
 .el-divider--vertical {
     height: 50px;
     /* margin-top: 5px; */
