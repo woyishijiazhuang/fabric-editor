@@ -41,6 +41,13 @@ export default class AlignLine {
         canvas.off('after:render', this.afterRender)
         canvas.off('mouse:up', this.mouseUp)
     }
+    public toggle = () => {
+        if (this.status) {
+            this.close()
+        } else {
+            this.open()
+        }
+    }
     private drawLine(x1: number, y1: number, x2: number, y2: number) {
         this.ctx.moveTo(x1 * this.zoom + this.viewportTransform[4], y1 * this.zoom + this.viewportTransform[5])
         this.ctx.lineTo(x2 * this.zoom + this.viewportTransform[4], y2 * this.zoom + this.viewportTransform[5])

@@ -3,18 +3,20 @@
         <div class="canvas_app">
             <div class="control_panel">
                 <TopMenu />
-                <TopTool />
+                <el-scrollbar>
+                    <TopTool />
+                </el-scrollbar>
             </div>
             <div ref="containerRef" class="fabric_container tbackground">
                 <ContextMenu />
             </div>
+            <FloatWindow />
         </div>
     </el-config-provider>
 </template>
 <script setup lang="ts">
 import * as fabric from 'fabric'
 import FabricEditor from '@/canvas'
-
 
 var editor = new FabricEditor({
     width: window.innerWidth,
@@ -57,22 +59,26 @@ onUnmounted(() => {
 .control_panel {
     display: flex;
     flex-direction: column;
-    min-height: 120px;
-    max-height: 120px;
-    /* background: #ffc6c6; */
 }
 
 .fabric_container {
-    background: #ccc;
     overflow: hidden;
     flex: 1;
     position: relative;
-    /* border: 2px solid #ffc6c6; */
 }
 
 .tbackground {
     background-position: 0 0, 5px 5px !important;
     background-size: 10px 10px !important;
-    background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee 100%), linear-gradient(45deg, #eee 25%, #fff 25%, #fff 75%, #eee 75%, #eee 100%) !important;
+}
+@media (prefers-color-scheme: light) {
+    .tbackground {
+        background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee 100%), linear-gradient(45deg, #eee 25%, #fff 25%, #fff 75%, #eee 75%, #eee 100%) !important;
+    }
+}
+@media (prefers-color-scheme: dark) {
+    .tbackground {
+        background-image: linear-gradient(45deg, #333 25%, transparent 25%, transparent 75%, #333 75%, #333 100%), linear-gradient(45deg, #333 25%, #444 25%, #444 75%, #333 75%, #333 100%) !important;
+    }
 }
 </style>

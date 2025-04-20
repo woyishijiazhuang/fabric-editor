@@ -1,6 +1,6 @@
 <template>
     <div
-        class="top-tool border-b border-solid border-[#f7f7f7] text-[12px] flex items-stretch flex-1 py-[5px] px-[20px] gap-[20px]">
+        class="top-tool min-w-[1080px] h-[80px] border-b border-solid border-[#f7f7f7] text-[12px] flex items-stretch flex-1 py-[5px] px-[20px] gap-[20px]">
         <div class="flex items-center flex-col justify-between w-[50px] cursor-pointer">
             <div class="m-auto w-[24px] h-[24px] border border-dashed border-current"></div>
             <span>选择</span>
@@ -9,12 +9,12 @@
         <WorkspaceSetting />
         <el-divider direction="vertical" />
         <div class="flex items-center flex-col justify-between cursor-pointer">
-            <div class="m-auto w-full grid grid-cols-3 gap-[4px] px-[4px]">
+            <div class="m-auto w-full grid grid-cols-3 gap-[8px] px-[4px]">
                 <el-icon v-for="i in 5" :size="18">
                     <el-icon-Picture :data-index="i" />
                 </el-icon>
             </div>
-            <span>工具</span>
+            <!-- <span>工具</span> -->
         </div>
         <el-divider direction="vertical" />
         <div class="flex items-center flex-col justify-between w-[50px] cursor-pointer">
@@ -46,7 +46,7 @@ const state = reactive({
 </script>
 <style>
 .el-divider--vertical {
-    height: 50px;
+    height: 70px;
     /* margin-top: 5px; */
 }
 </style>

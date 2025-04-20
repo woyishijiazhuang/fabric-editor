@@ -1,5 +1,5 @@
 <template>
-    <header class="top-menu bg-[#f3f3f3] flex items-center gap-4 p-2">
+    <header class="top-menu h-[38px] bg-[#f3f3f3] flex items-center gap-4 p-2">
         <img class="w-[20px] h-[20px]" src="/icon.svg" />
         <el-dropdown>
             <el-link :underline="false" >文件</el-link>
@@ -26,13 +26,16 @@
             <el-link :underline="false" >查看</el-link>
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item @click="editor.ruler.status ? editor.ruler.close() : editor.ruler.open()">
+                    <el-dropdown-item @click="view.canvasWindw = true">
+                        调整画布
+                    </el-dropdown-item>
+                    <el-dropdown-item @click="editor.ruler.toggle">
                         <el-icon>
                             <el-icon-select v-if="editor.ruler.status" />
                         </el-icon>
                         标尺
                     </el-dropdown-item>
-                    <el-dropdown-item @click="editor.alignLine.status ? editor.alignLine.close() : editor.alignLine.open()">
+                    <el-dropdown-item @click="editor.alignLine.toggle">
                         <el-icon>
                             <el-icon-select v-if="editor.alignLine.status" />
                         </el-icon>
@@ -55,6 +58,9 @@
 </template>
 
 <script lang="ts" setup>
+import { useViewStore } from '@/store/useViewStore'
+const view = useViewStore()
+
 import { useFullscreen } from '@vueuse/core'
 const { isFullscreen, toggle } = useFullscreen()
 

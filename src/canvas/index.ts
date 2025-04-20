@@ -1,5 +1,5 @@
 import * as fabric from 'fabric'
-import Event from './class/Event'
+import Event, { EventName } from './class/Event'
 import { CanvasOptions } from 'fabric'
 import control from './utils/control'
 import AlignLine from './class/AlignLine'
@@ -40,7 +40,8 @@ class FabricEditor extends Event {
             height: 600,
             selectable: false,
             hasControls: false,
-            fill: '#FFF',
+            fill: 'rgba(255, 255, 255, 1)',
+            // backgroundColor: 'rgba(128, 128, 128, 0.5)',
             moveCursor: 'default',
             hoverCursor: 'default',
             strokeWidth: 0,
@@ -331,7 +332,7 @@ class FabricEditor extends Event {
                 width: el.clientWidth,
                 height: el.clientHeight
             })
-            this.emit('container:resize')
+            this.emit(EventName.canvasResize)
             this.centerActive(this.workspace)
         }, 50)
         fun()

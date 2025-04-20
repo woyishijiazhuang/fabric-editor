@@ -96,18 +96,36 @@ useEventListener(window.document, 'click', () => style.display = 'none')
 </script>
 
 <style scoped>
+@media (prefers-color-scheme: light) {
+    .context-menu {
+        background: #fff;
+        color: #333;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .context-menu>li:hover {
+        background: #eee;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .context-menu {
+        background: #333;
+        color: #fff;
+        box-shadow: 0 1px 4px rgba(256, 256, 256, 0.3);
+    }
+
+    .context-menu>li:hover {
+        background: #444;
+    }
+}
+
 .context-menu {
     position: absolute;
     min-width: 120px;
-    background: #fff;
     border-radius: 8px;
     padding: 4px;
-
     font-size: 12px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-
-    /* top: 100px;
-    left: 200px; */
     z-index: 1;
 }
 
@@ -119,9 +137,5 @@ useEventListener(window.document, 'click', () => style.display = 'none')
     padding: 4px 8px;
     cursor: pointer;
     transition: all 0.2s;
-}
-
-.context-menu>li:hover {
-    background: #eee;
 }
 </style>

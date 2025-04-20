@@ -1,0 +1,3 @@
+<template>
+    <CanvasWindow></CanvasWindow>
+</template>

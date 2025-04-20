@@ -1,9 +1,9 @@
 <template>
-    <div class="flex items-center flex-col justify-between  cursor-pointer">
+    <div class="flex items-center flex-col justify-between cursor-pointer">
         <div class="m-auto w-full grid grid-cols-3 gap-x-4 gap-y-1">
             <label class="col-span-2 flex">
                 <span class="mr-[10px]">宽: </span>
-                <el-input-number class="!w-[90px]" v-model="state.width" :min="100" :max="10000" controls-position="right" />
+                <el-input-number class="min-w-[90px] max-w-[90px]" v-model="state.width" :min="100" :max="10000" controls-position="right" />
             </label>
             <label class="row-span-2 flex flex-col items-center gap-[10px]">
                 <span>背景</span>
@@ -11,10 +11,10 @@
             </label>
             <label class="col-span-2 flex">
                 <span class="mr-[10px]">宽: </span>
-                <el-input-number class="!w-[90px]" v-model="state.height" :min="100" :max="10000" controls-position="right" />
+                <el-input-number class="min-w-[90px] max-w-[90px]" v-model="state.height" :min="100" :max="10000" controls-position="right" />
             </label>
         </div>
-        <span>画布</span>
+        <!-- <span>画布</span> -->
     </div>
 </template>
 <script setup lang='ts'>

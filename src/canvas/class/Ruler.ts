@@ -1,6 +1,6 @@
 import FabricEditor from '../index'
 import * as fabric from 'fabric'
-
+import { EventName } from '../class/Event'
 const DPI = window.devicePixelRatio
 const getCanvas = (width: number, height: number) => {
     const canvas = document.createElement('canvas')
@@ -86,24 +86,24 @@ export default class Ruler {
         this.hCanvas.style.display = 'block'
         this.vCanvas.style.display = 'block'
 
-        this.FabricEditor.on('container:resize', this.resize)
+        this.FabricEditor.on(EventName.canvasResize, this.resize)
         // 代理画布缩放事件
         this._viewportTransform = this.canvas.setViewportTransform
         this.canvas.setViewportTransform = (viewportTransform: fabric.TMat2D) => {
             // 为了在别的地方可能会用到, 先执行后触发, 确保如果是从this.canvas.setViewportTransform获取能获取到最新的数据
             this._viewportTransform!.call(this.canvas, viewportTransform)
-            this.FabricEditor.emit('viewportTransform:change', viewportTransform)
+            this.FabricEditor.emit(EventName.viewportTransformChange, viewportTransform)
         }
         this._zoomToPoint = this.canvas.zoomToPoint
         this.canvas.zoomToPoint = (point: fabric.Point, value: number) => {
             // 为了在别的地方可能会用到, 先执行后触发, 确保如果是从this.canvas.zoomToPoint获取能获取到最新的数据
             this._zoomToPoint!.call(this.canvas, point, value)
-            this.FabricEditor.emit('zoomToPoint', point, value)
+            this.FabricEditor.emit(EventName.zoomToPoint, point, value)
         }
 
-        this.FabricEditor.on('viewportTransform:change', this.render)
+        this.FabricEditor.on(EventName.viewportTransformChange, this.render)
         // this.canvas.on('object:modified', this.render)
-        this.FabricEditor.on('zoomToPoint', this.render)
+        this.FabricEditor.on(EventName.zoomToPoint, this.render)
         this.canvas.on('mouse:move', this.render)
         // 选中和取消选中
         this.canvas.on('selection:created', this.render)
@@ -117,17 +117,24 @@ export default class Ruler {
         this.hCanvas.style.display = 'none'
         this.vCanvas.style.display = 'none'
 
-        this.FabricEditor.off('container:resize', this.resize)
+        this.FabricEditor.off(EventName.canvasResize, this.resize)
         // 代理画布缩放事件
         this.canvas.setViewportTransform = this._viewportTransform!
         this.canvas.zoomToPoint = this._zoomToPoint!
 
-        this.FabricEditor.off('viewportTransform:change', this.render)
+        this.FabricEditor.off(EventName.viewportTransformChange, this.render)
         // this.canvas.off('object:modified', this.render)
-        this.FabricEditor.off('zoomToPoint', this.render)
+        this.FabricEditor.off(EventName.zoomToPoint, this.render)
         this.canvas.off('mouse:move', this.render)
         this.canvas.off('selection:created', this.render)
         this.canvas.off('selection:cleared', this.render)
+    }
+    public toggle = () => {
+        if (this.status) {
+            this.close()
+        } else {
+            this.open()
+        }
     }
 
     public render = (() => {
